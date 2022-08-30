@@ -29,68 +29,32 @@ const galleryList = document.querySelector('.gallery');
 galleryList.insertAdjacentHTML('beforeend', itemsMarkup)
 
 
-
-
-
-galleryList.addEventListener ('click', openModslWindow);
-
-function openModslWindow (event){
+function creatModslWindow (event){
 
     const ImgUrlOriginal = event.target.dataset.source;
-    if (!event.target.classList.contains('.gallery__link')){
-        return
-    } 
-
+  
     const instance = basicLightbox.create(`
     <img src="${ImgUrlOriginal}" width="800" height="600">
 `)
 
-instance.show()
-event.preventDefault();
+instance.show(
+  document.addEventListener('keydown', (event) => {
+    if (event.key && event.code === 'Escape'){
+      instance.close()
+    }
+  })
+  )
 }
 
+function openModslWindow (event){
 
 
-// const makeGalleryItemMarkup = (arr) => {
-//     return arr
-//         .map(({ description: descr, preview, original: orig }) => {
-//             return `<div class="gallery__item">
-//                         <a class="gallery__link" href="large-image.jpg">
-//                             <img
-//                                 class="gallery__image"
-//                                 src="${preview}"
-//                                 data-source="${orig}"
-//                                 alt="${descr}"
-//                                 />
-//                         </a>
-//                     </div>`;
-//         })
-//         .join('');
-// };
+  if (!event.target.classList.contains('gallery__image')){
+    return
+  } 
+  
+  creatModslWindow(event)
+  event.preventDefault();
+};
 
-// const galleryContainerRef = document.querySelector('.gallery');
-// galleryContainerRef.innerHTML = makeGalleryItemMarkup(galleryItems);
-
-// const createLightboxInstance = (e) => {
-//     const targetedImgUrl = e.target.dataset.source;
-//     const instance = basicLightbox.create(`
-//     <img src="${targetedImgUrl}" width="800" height="600">
-//     `);
-
-//     instance.show(
-//         document.addEventListener('keydown', (e) => {
-//             if (e.key && e.code === 'Escape') {
-//                 instance.close();
-//             }
-//         })
-//     );
-// };
-
-// const onGalleryImgClick = (e) => {
-//     if (e.target.nodeName !== 'IMG') return;
-
-//     createLightboxInstance(e);
-//     e.preventDefault();
-// };
-
-// galleryContainerRef.addEventListener('click', onGalleryImgClick);
+galleryList.addEventListener ('click', openModslWindow);
