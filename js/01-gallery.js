@@ -29,32 +29,69 @@ const galleryList = document.querySelector('.gallery');
 galleryList.insertAdjacentHTML('beforeend', itemsMarkup)
 
 
+// function creatModslWindow (event){
+
+//     const ImgUrlOriginal = event.target.dataset.source;
+  
+//     const instance = basicLightbox.create(`
+//     <img src="${ImgUrlOriginal}" width="800" height="600">
+// `)
+
+// instance.show(
+//   document.addEventListener('keydown', (event) => {
+//     if (event.key && event.code === 'Escape'){
+//       instance.close()
+//     }
+//   })
+//   )
+// }
+
+// function openModslWindow (event){
+
+
+//   if (!event.target.classList.contains('gallery__image')){
+//     return
+//   } 
+  
+//   creatModslWindow(event)
+//   event.preventDefault();
+// };
+
+// galleryList.addEventListener ('click', openModslWindow);
+
+
+
 function creatModslWindow (event){
 
-    const ImgUrlOriginal = event.target.dataset.source;
-  
-    const instance = basicLightbox.create(`
-    <img src="${ImgUrlOriginal}" width="800" height="600">
-`)
+  const ImgUrlOriginal = event.target.dataset.source;
 
-instance.show(
-  document.addEventListener('keydown', (event) => {
-    if (event.key && event.code === 'Escape'){
-      instance.close()
-    }
-  })
-  )
+  const instance = basicLightbox.create(`
+  <img src="${ImgUrlOriginal}" width="800" height="600">
+`,
+{
+  onShow: (instance) => window.addEventListener('keydown', OnEscPress),
+  onClose: (instance) => window.removeEventListener('keydown', OnEscPress)
 }
+)
+
+instance.show();
+
+function OnEscPress (event){
+  if (event.key && event.code === 'Escape'){
+    instance.close()}
+};
+};
+
 
 function openModslWindow (event){
 
 
-  if (!event.target.classList.contains('gallery__image')){
-    return
-  } 
-  
-  creatModslWindow(event)
-  event.preventDefault();
+if (!event.target.classList.contains('gallery__image')){
+  return
+} 
+
+creatModslWindow(event)
+event.preventDefault();
 };
 
 galleryList.addEventListener ('click', openModslWindow);
